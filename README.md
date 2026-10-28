@@ -110,8 +110,21 @@ python3 match.py --bots greedy,greedy,random,random --map maps/island.txt --rota
 ├── ai_contest.py        # Live pygame viewer
 ├── match.py             # Headless match runner with stats
 ├── docs/img/            # Screenshots
-└── stats/               # Raw baseline statistics
+├── stats/               # Raw baseline statistics
+└── tests/               # Smoke tests (engine + match runner)
 ```
+
+## Tests
+
+Standard library only, nothing to install:
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+They play a short seeded duel on every map, a 4-player melee, check that
+seeded games are deterministic and that GreedyBot beats RandBot on the
+island map, and run `match.py` end to end. CI runs them on every push.
 
 ## Credits & license
 

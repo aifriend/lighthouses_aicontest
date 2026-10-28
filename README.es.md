@@ -114,8 +114,22 @@ python3 match.py --bots greedy,greedy,random,random --map maps/island.txt --rota
 ├── ai_contest.py        # Visor en vivo con pygame
 ├── match.py             # Ejecutor headless de partidas con estadísticas
 ├── docs/img/            # Capturas de pantalla
-└── stats/               # Estadísticas base en bruto
+├── stats/               # Estadísticas base en bruto
+└── tests/               # Tests de humo (motor + ejecutor de partidas)
 ```
+
+## Tests
+
+Solo biblioteca estándar, no hay nada que instalar:
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+Juegan un duelo corto con semilla en cada mapa, una partida de 4 jugadores,
+comprueban que las partidas con semilla son deterministas y que GreedyBot
+le gana a RandBot en el mapa island, y ejecutan `match.py` de punta a punta.
+La CI los ejecuta en cada push.
 
 ## Créditos y licencia
 
