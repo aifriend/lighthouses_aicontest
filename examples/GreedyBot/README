@@ -1,0 +1,13 @@
+Nombre: GreedyBot v1.0
+Licencia: Dominio Público
+
+Robot de ejemplo codicioso: se mueve hacia la casilla visible con más
+energía (a igualdad, hacia el faro más cercano) y, cuando está sobre un
+faro, conecta faros propios entre sí o ataca/recarga con la mitad de su
+energía.
+
+Requisitos:
+	Python 3.x
+
+Uso:
+$ python3 GreedyBot/greedybot.py

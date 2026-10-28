@@ -1,0 +1,4 @@
+# Only needed for the live pygame viewer (ai_contest.py).
+# match.py and the example bots are standard-library only.
+# Use pygame-ce, not pygame: the pygame 2.6.1 font module fails on Python 3.14.
+pygame-ce

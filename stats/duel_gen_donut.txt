@@ -1,0 +1,25 @@
+game  0: greedy=396  random=0
+game  1: greedy=392  random=102
+game  2: greedy=396  random=210
+game  3: greedy=392  random=192
+game  4: greedy=396  random=48
+game  5: greedy=380  random=338
+game  6: greedy=396  random=154
+game  7: greedy=392  random=256
+game  8: greedy=396  random=276
+game  9: greedy=382  random=76
+game 10: greedy=396  random=110
+game 11: greedy=382  random=534
+game 12: greedy=396  random=316
+game 13: greedy=392  random=446
+game 14: greedy=396  random=486
+game 15: greedy=392  random=238
+game 16: greedy=396  random=86
+game 17: greedy=392  random=326
+game 18: greedy=396  random=272
+game 19: greedy=392  random=206
+
+=== 20 games | map=maps/gen_donut.txt | rounds=200 | seed=42 ===
+greedy     wins=17  mean=392.4    std=5.0    min=380  max=396 
+random     wins=3   mean=233.6    std=142.6  min=0    max=534 
+draws=0

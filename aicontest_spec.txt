@@ -1,0 +1,437 @@
+Euskal Encounter 21 - aI Contest
+================================================================================
+                                 FaROS LaSER
+================================================================================
+
+v0.7
+
+NOTa: esta especificacion esta sujeta a cambio. En particular, se reserva el
+derecho de cambiar los valores numericos mencionados, que no son definitivos.
+
+================================================================================
+El Mapa
+================================================================================
+
+El juego se jugara en un tablero de dos dimensiones compuesto por una matriz de
+casillas. Cada partida transcurrira sobre un mapa de forma y dimensiones fijadas
+al comienzo de ella. El mapa define que subconjunto de las casillas forma el
+area jugable (la isla). En todos los casos las casillas del borde del mapa no
+formaran parte del area jugable (lo cual excluye la posibilidad de mapas con
+'wraparound'). Ademas, todas las casillas de la 'isla' estaran conectadas entre
+si (no son validos los mapas con areas disjuntas).
+
+Ejemplo de un mapa valido:
+
+XXXXXXXXXXXX
+XXXX       X
+X      XX  X
+XX  X     XX
+XX  XXXX  XX
+XX        XX
+XXXXXXXXXXXX
+
+Se considera que la casilla inferior izquierda es la casilla (0,0) y las
+coordenadas crecen hacia arriba y a la derecha.
+
+================================================================================
+Energia
+================================================================================
+
+La energia es indispensable para jugar el juego. Cada casilla de la isla tendra
+una cantidad de energia disponible, inicialmente 0, que se ira incrementando
+durante la partida. Los jugadores que pisan una casilla obtienen la energia
+que hay en ella, que pasa de nuevo a 0. La energia siempre es un entero (no hay
+unidades fraccionarias).
+
+================================================================================
+Los jugadores
+================================================================================
+
+Cada partida la jugaran dos o mas jugadores identificados por los numeros 0, 1,
+2, etc.
+
+Cada jugador tiene una posicion actual en el mapa. La posicion al comienzo de la
+partida estara definida en el mapa.
+
+Los jugadores podran viajar por la isla de forma libre, en cualquiera de las
+ocho direcciones (horizontal, vertical, y diagonal). Varios jugadores pueden
+ocupar la misma casilla en el mismo momento. No se podra transitar por las
+casillas que no forman parte de la isla.
+
+Los jugadores dispondran de una reserva de energia (0 al comienzo de la
+partida). La energia se obtendra de las casillas. En principio no habra limite
+sobre la energia de cada jugador, aunque se reserva el derecho a establecer un
+maximo.
+
+================================================================================
+Los faros
+================================================================================
+
+En el mapa se situaran una serie de faros. Cada faro puede ser neutro o estar
+controlado por un jugador. Cuando un faro esta controlado por un jugador, tendra
+una cantidad de energia asociada a el. Esta energia disminuira con el tiempo,
+y cuando llega a 0 el faro pasara a ser neutro de nuevo. No hay un maximo de
+energia por faro.
+
+Los faros generan energia de forma continua en las casillas cercanas a
+ellos. Esta energia no proviene del faro en si, es decir, es independiente de
+si el faro esta controlado por un jugador, o si es neutro, y de su nivel actual
+de energia.
+
+================================================================================
+Conexiones
+================================================================================
+
+Los jugadores podran conectar parejas de faros mediante haces laser cuando ambos
+estan bajo su control. Sin embargo, esta prohibido lanzar un haz entre dos faros
+que cruce un haz ya existente (tanto del mismo jugador como del contrario).
+Tambien esta prohibido conectar dos faros si la conexion pasa exactamente por un
+tercer faro.
+
+Para realizar una conexion entre dos faros se debe estar en la casilla de uno
+de ellos y tener la clave del otro faro. Para obtener la clave de un faro se
+debera visitarlo, y solo se puede tener una clave en cada momento, que se
+perdera al realizar una conexion (las claves son de un solo uso, OTP).
+
+Cuando tres faros se conectan directamente entre si formando un triangulo, se
+iluminan todas las casillas situadas en el interior de dicho triangulo. El
+objetivo del juego es tener el maximo numero de casillas iluminadas por
+areas triangulares entre faros bajo el control del mismo jugador.
+
+Las conexiones pueden cruzar casillas que no forman parte de la isla. Las
+casillas que no forman parte de la isla no se iluminan ni puntuan, pero pueden
+formar parte de un triangulo.
+
+================================================================================
+El Juego
+================================================================================
+
+La partida constara de una serie de rondas. Durante cada ronda primero sera el
+turno del jugador 0, despues el 1, etc.
+
+Al comienzo del juego, cada jugador recibira la siguiente informacion:
+- Su numero de jugador
+- El numero de jugadores total
+- Su posicion inicial
+- El mapa (es decir un mapa booleano de que casillas forman parte de la isla)
+- Por cada faro sus coordenadas
+
+Al comienzo de cada ronda ocurrira lo siguiente:
+- Cada casilla incrementara su cantidad de energia libre disponible segun la
+  siguiente formula: energia += floor(5 - distancia a faro)
+  Esto ocurre por cada faro, de forma que las casillas a menos de 5 unidades
+  de distancia lineal a mas de un faro se veran afectadas por todos ellos.
+  Cada casilla se limitara  a un maximo de 100 unidades de energia.
+- Cada jugador obtendra de su casilla actual la cantidad de energia libre
+  presente en ella, que se reducira a cero. Si varios jugadores comparten
+  casilla, cada uno recibira la fraccion correspondiente (si hay resto tras la
+  division, la energia restante se pierde).
+- Si un jugador esta situado sobre un faro, obtendra su clave si no dispone ya
+  de ella. Esto ocurre indistintamente de si el faro esta controlado por el o
+  no.
+- La energia de todos los faros se decrementa en 10 puntos. Si llega a cero,
+  el faro pasa a ser neutro y desaparecen todas las conexiones con el.
+
+Antes de cada turno, el jugador recibe la siguiente informacion:
+- Su posicion
+- Su puntuacion
+- Su nivel de energia acumulada
+- Por cada casilla cuyo centro se haya a 3 unidades o menos del jugador (en
+  linea recta) el jugador recibe la cantidad de energia libre disponible en ella.
+  Logicamente, el valor siempre sera cero para la casilla del propio jugador, ya
+  que esa energia ya ha sido obtenida.
+- Por cada faro el jugador recibe:
+  - Sus coordenadas (como identificador)
+  - El jugador que lo controla (0, 1, 2, ... o ninguno=-1)
+  - Su nivel de energia (cero si no esta bajo control)
+  - La lista de faros a los cuales esta conectado (por lo tanto cada conexion se
+    indicara por duplicado, desde ambos vertices).
+  - Si se dispone de su clave o no.
+
+Cabe resaltar que los jugadores NO conocen la posicion de los demas.
+
+Cada turno, cada jugador podra realizar una de las siguientes acciones(11):
+- Nada
+- Mover a una casilla adyacente
+- Si se encuentra en la misma casilla que un faro:
+  - Atacar o recargarlo. Atacar o recargar un faro es la misma accion: el
+    jugador aporta una cantidad de energia de su eleccion. Si el faro no esta
+    bajo su control, se resta total o parcialmente de la energia presente en el
+    faro. Cuando toda la energia del faro ha sido eliminada, el sobrante de
+    energia aportada se suma de nuevo al faro y el faro pasa a estar controlado
+    por el jugador actual.
+  - Conectarlo a otro faro bajo el control del mismo jugador. Para ello, el
+    jugador debe disponer de la clave del faro remoto, y la perdera al crear
+    la conexion.
+
+
+================================================================================
+Puntuacion
+================================================================================
+
+Cada jugador tendra una puntuacion (0 al comienzo de la partida), que es un
+numero entero. Se obtendran puntos al termino de cada ronda de la siguiente
+forma:
+
+- 2 puntos por cada faro bajo control del jugador.
+- 2 puntos por cada pareja de faros conectados bajo el control del jugador.
+- Por cada 3 faros conectados entre si bajo su control (formando un triangulo):
+1 punto por cada casilla cuyo centro este dentro de dicho triangulo.
+
+  Nota 1: es posible que las areas se solapen, y, en ese caso, puntuan doble.
+  Por ejemplo, en esta configuracion de faros conectados existen 3 triangulos
+  interiores y un triangulo exterior, de forma que la cantidad de puntos
+  otorgados sera equivalente al DOBLE del area del triangulo exterior.
+
+  o-----o
+   \`o'/
+    \|/     
+     o
+
+  Igualmente, es posible que un area de un jugador contenga completamente a
+  un area de otro jugador. En este caso cada jugador obtiene sus puntos
+  correspondientes. Es decir, la casilla se puede 'iluminar' de una mezcla de
+  colores.
+
+  Nota 2: Cuando un lado del triangulo pasa por el centro de una casilla, se
+  utilizara la regla de rasterizacion de OpenGL para determinar que casillas
+  se consideran como parte del area (cuentan las casillas superiores y a la
+  izquierda): http://goo.gl/f1cxU
+
+================================================================================
+Fin del juego
+================================================================================
+
+El juego terminara tras un numero predefinido de rondas.
+
+================================================================================
+Protocolo
+================================================================================
+
+Los bots se comunicaran por stdio/stdout. El protocolo consiste en mensajes
+JSON codificados en una sola linea, terminados por \n (newline). El motor del
+juego siempre es el responsable de iniciar las comunicaciones, y el bot
+contestara con su respuesta. Los bots pueden mostrar mensajes de debug por
+stderr, pero DEBEN prefijarlos por su nombre entre [] para una clara
+identificacion:
+
+[TroloBot] mensaje...
+
+Nota: los siguiente ejemplos estan formateados en varias lineas, pero en
+el protocolo real deberan estar contenidos exclusivamente en una linea.
+
+----------------
+Inicio del juego
+----------------
+El motor envia el siguiente mensaje (ejemplo):
+{
+    'player_num': 0,
+    'player_count': 2,
+    'position': [1, 2],
+    'map': [
+        [0, 0, 0, 0, 0],
+        [0, 1, 1, 1, 0],
+        [0, 1, 1, 0, 0],
+        [0, 1, 1, 0, 0],
+        [0, 0, 0, 0, 0]],
+    'lighthouses': [
+        [1, 1], [3, 1], [2, 3], [1, 3]
+    ]
+}
+
+Este mensaje indica que el bot es el primer jugador (jugador 0) de un total de 2
+(el otro seria el jugador 1), y describe el siguiente mapa de 5x5:
+
+v----- casilla (0, 4)
+XXXXX<-- casilla (4,4)
+X!!XX
+X0 XX
+X! !X
+XXXXX<-- casilla (4,0)
+^----- casilla (0,0)
+
+! - faro
+0 - posicion inicial del jugador 0
+
+Notese que el mapa se envia de abajo hacia arriba (0,0 es la primera casilla
+que se envia, pero es la esquina inferior izquierda). En la practica la
+direccion en la que se visualice el mapa es indistinta para el juego,
+excepto en lo que respecta a la iluminacion de casillas, que sigue la regla
+de bordes izquierdo y superior asumiendo que (0,0) es la esquina inferior
+izquierda.
+
+El bot contesta con el siguiente mensaje:
+{
+    'name': 'TroloBot'
+}
+
+El nombre se utilizara para mostrar el nombre del bot en pantalla.
+El bot debe inicializarse y contestar en un maximo de 2 segundos tras el
+envio del mensaje de inicio.
+
+----------------
+Turno
+----------------
+El motor envia el siguiente mensaje con el estado actual (ejemplo):
+{
+    'position': [1, 3],
+    'score': 36,
+    'energy': 66,
+    'view': [
+        [-1,-1,-1, 0,-1,-1,-1],
+        [-1, 0, 0,50,23,50,-1],
+        [-1, 0, 0,32,41, 0,-1],
+        [ 0, 0, 0, 0,50, 0, 0],
+        [-1, 0, 0, 0, 0, 0,-1],
+        [-1, 0, 0, 0, 0, 0,-1],
+        [-1,-1,-1, 0,-1,-1,-1]
+    ],
+    'lighthouses': [
+        {
+            'position': [1, 1],
+            'owner': 0,
+            'energy': 30,
+            'connections': [[1, 3]],
+            'have_key': false
+        },
+        {
+            'position': [3, 1],
+            'owner': -1,
+            'energy': 0,
+            'connections': [],
+            'have_key': false
+        },
+        {
+            'position': [2, 3],
+            'owner': 1,
+            'energy': 90,
+            'connections': [],
+            'have_key': false
+        },
+        {
+            'position': [1, 3],
+            'owner': 0,
+            'energy': 50,
+            'connections': [[1, 1]],
+            'have_key': true
+        }
+    ]
+}
+
+'view' es un mapa de la energia disponible en las celdas cercanas al jugador.
+Nominalmente es de 7x7, conteniendo las casillas a distancia 3 o menos del
+jugador. Los bots deben tolerar que este valor varie, pero siempre se dara
+el caso de que 'view' es una matriz cuadrada de dimension impar, y la posicion
+del bot corresponde a la casilla de en medio de la matriz. Las celdas fuera del
+radio 3 se devuelven como -1 para indicar que no hay datos. Las celdas que
+no forman parte de la isla se devuelven como 0 ya que nunca pueden contener
+energia (las casillas que si forman parte de la isla pero no tienen energia
+tambien se devuelven como 0). Ya que el jugador obtiene la energia de la
+casilla central al comienzo de cada ronda, esta siempre tendra un valor de 0.
+
+En este caso, la vista nos proporciona la siguiente informacion sobre el mapa:
+X  X  X  X ??
+X () 50  X  X
+X 32 41  X ??
+X 50 23 50 ??
+?? X ?? ?? ??
+
+() - posicion jugador 0 (energia 0)
+?? - no hay datos (en este mapa, por ser pequeño, resulta que todas estas
+casillas no forman parte de la isla; este no seria el caso en mapas mayores)
+X - casilla no forma parte de la isla, pero entra dentro del area visible
+(distancia 3 o menor). Este hecho viene del mapa del mensaje inicial.
+
+El mensaje describe los faros siguientes:
+X  X  X  X  X
+X 50 90  X  X 
+X  |     X  X 
+X 30     0  X 
+X  X  X  X  X 
+
+Donde cada numero indica la energia del faro. Los faros con energia == 50, 30
+estan controlados por el jugador 0 y conectados entre si, y el faro con
+energia == 90 esta controlado por el jugador 1. Bajo estas condiciones, el
+jugador 0 obtiene 6 puntos por ronda, y el jugador 1 obtiene 2 por ronda.
+ademas, el jugador 0 tiene la clave del faro con energia 50 (es de suponer que
+visito el faro 30 para obtener su clave, y luego el 50 para conectarlo al
+30, perdiendo la clave del 30 en el proceso, pero ahora dispone de la clave del
+50 por estar situado sobre el).
+
+El bot debe contestar con uno de los siguientes mensajes (tiempo maximo por
+turno: 100ms desde que se recibe el estado hasta que se contesta):
+{
+    'command': 'pass'
+}
+No hacer nada (pasar el turno)
+{
+    'command': 'move',
+    'x': -1,
+    'y': 1
+}
+Mover a una casilla adyacente (en este caso, arriba y hacia la izquierda).
+Obviamente x e y deben ser -1, 0, o 1. Mover 0,0 es equivalente a pasar el
+turno.
+{
+    'command': 'attack',
+    'energy': 80
+}
+atacar o recargar el faro sobre el cual se encuentra el jugador. Por ejemplo,
+si el faro esta controlado por otro jugador con energia 50, entonces pasaria a
+estar controlado por el jugador actual con energia 30. Si el faro esta
+controlado por otro jugador con energia 90, entonces seguiria controlado por el
+mismo jugador con energia 10. Si el faro esta controlado por el jugador actual
+con energia 40, entonces pasa a tener energia 120. Si el faro esta controlado
+por otro jugador con energia 80, entonces pasa a ser neutro (no controlado por
+ningun jugador) con energia 0. Al perderse o cambiar el control de un faro,
+se destruyen todas las conexiones actuales y por extension dejan de existir
+todas las areas (triangulos) que tienen ese faro como vertice (aunque es posible
+que un area que contenga integramente al faro no se vea afectada). La energia
+suministrada debe ser igual o menor a la energia que posee el jugador
+actualmente (si no lo fuera, se limita automaticamente al total disponible).
+atacar con energia 0 es equivalente a pasar el turno.
+{
+    'command': 'connect',
+    'destination': [1, 1]
+}
+Conectar el faro de la posicion actual al faro (1, 1). El jugador debe poseer
+la clave del faro de destino, y ambos deben estar controlados por el jugador.
+La conexion no debe existir ya, ni cruzarse con ninguna otra conexion
+existente, ni pasar por el centro de un tercer faro (la conexion se puede
+solapar con la casilla de un tercer faro siempre y cuando no lo haga por su
+centro exacto).
+
+El motor del juego contesta con el resultado de la operacion:
+{
+    'success': true
+}
+O bien (ejemplo de error):
+{
+    'success': false,
+    'message': 'Player does not have the destination key'
+}
+En caso de error, el resultado es el mismo que si el jugador hubiera pasado el
+turno.
+
+----------------
+Fin del juego
+----------------
+Al termino del juego, el motor simplemente cierra stdin y stdout. El bot debe
+cerrarse correctamente al detectar una condicion de EOF en stdin.
+
+En resumen, las comunicaciones con el bot siguien la siguiente progresion:
+<< Inicializacion (mapa, faros, etc.)
+>> Hello (nombre del bot)
+<< Estado al comienzo del turno (faros, conexiones, energia, etc.)
+>> Jugada (comando)
+<< Resultado de la jugada
+<< Estado al comienzo del turno (faros, conexiones, energia, etc.)
+>> Jugada (comando)
+<< Resultado de la jugada
+(...)
+<< Estado al comienzo del turno (faros, conexiones, energia, etc.)
+>> Jugada (comando)
+<< Resultado de la jugada
+<< [EOF]
+>> [EOF]
+

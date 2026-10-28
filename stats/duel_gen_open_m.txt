@@ -1,0 +1,25 @@
+game  0: greedy=396  random=92
+game  1: greedy=54  random=1110
+game  2: greedy=396  random=14
+game  3: greedy=396  random=330
+game  4: greedy=390  random=136
+game  5: greedy=396  random=622
+game  6: greedy=368  random=460
+game  7: greedy=350  random=312
+game  8: greedy=396  random=234
+game  9: greedy=362  random=34
+game 10: greedy=316  random=80
+game 11: greedy=392  random=480
+game 12: greedy=396  random=506
+game 13: greedy=396  random=276
+game 14: greedy=154  random=242
+game 15: greedy=396  random=572
+game 16: greedy=126  random=270
+game 17: greedy=202  random=488
+game 18: greedy=324  random=414
+game 19: greedy=396  random=168
+
+=== 20 games | map=maps/gen_open_m.txt | rounds=200 | seed=42 ===
+greedy     wins=10  mean=330.1    std=103.7  min=54   max=396 
+random     wins=10  mean=342.0    std=249.6  min=14   max=1110
+draws=0

@@ -1,0 +1,25 @@
+game  0: greedy=394  random=0
+game  1: greedy=392  random=206
+game  2: greedy=394  random=288
+game  3: greedy=290  random=316
+game  4: greedy=394  random=92
+game  5: greedy=120  random=628
+game  6: greedy=224  random=170
+game  7: greedy=98  random=476
+game  8: greedy=254  random=140
+game  9: greedy=392  random=38
+game 10: greedy=394  random=0
+game 11: greedy=136  random=636
+game 12: greedy=394  random=82
+game 13: greedy=392  random=0
+game 14: greedy=394  random=158
+game 15: greedy=358  random=134
+game 16: greedy=394  random=186
+game 17: greedy=392  random=278
+game 18: greedy=270  random=450
+game 19: greedy=90  random=576
+
+=== 20 games | map=maps/gen_cross.txt | rounds=200 | seed=42 ===
+greedy     wins=14  mean=308.3    std=112.0  min=90   max=394 
+random     wins=6   mean=242.7    std=203.3  min=0    max=636 
+draws=0

@@ -1,0 +1,25 @@
+game  0: greedy=394  random=290
+game  1: greedy=390  random=560
+game  2: greedy=286  random=450
+game  3: greedy=390  random=298
+game  4: greedy=394  random=0
+game  5: greedy=130  random=556
+game  6: greedy=394  random=216
+game  7: greedy=390  random=202
+game  8: greedy=394  random=504
+game  9: greedy=390  random=398
+game 10: greedy=80  random=472
+game 11: greedy=228  random=212
+game 12: greedy=394  random=78
+game 13: greedy=390  random=368
+game 14: greedy=394  random=208
+game 15: greedy=390  random=444
+game 16: greedy=394  random=788
+game 17: greedy=390  random=748
+game 18: greedy=394  random=334
+game 19: greedy=390  random=262
+
+=== 20 games | map=maps/gen_ring_l.txt | rounds=200 | seed=42 ===
+greedy     wins=11  mean=349.8    std=91.8   min=80   max=394 
+random     wins=9   mean=369.4    std=197.4  min=0    max=788 
+draws=0

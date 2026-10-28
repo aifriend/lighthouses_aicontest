@@ -1,0 +1,25 @@
+game  0: greedy=300  random=362
+game  1: greedy=392  random=572
+game  2: greedy=160  random=572
+game  3: greedy=340  random=292
+game  4: greedy=120  random=1172
+game  5: greedy=130  random=830
+game  6: greedy=226  random=1108
+game  7: greedy=332  random=1444
+game  8: greedy=360  random=978
+game  9: greedy=66  random=462
+game 10: greedy=392  random=900
+game 11: greedy=140  random=844
+game 12: greedy=348  random=606
+game 13: greedy=64  random=746
+game 14: greedy=392  random=476
+game 15: greedy=392  random=484
+game 16: greedy=252  random=682
+game 17: greedy=358  random=904
+game 18: greedy=394  random=370
+game 19: greedy=392  random=382
+
+=== 20 games | map=maps/square.txt | rounds=200 | seed=42 ===
+greedy     wins=3   mean=277.5    std=117.8  min=64   max=394 
+random     wins=17  mean=709.3    std=302.1  min=292  max=1444
+draws=0

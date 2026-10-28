@@ -1,0 +1,27 @@
+game  0: greedy=394  greedy=134  random=420  random=772
+game  1: greedy=392  greedy=154  random=474  random=370
+game  2: greedy=392  greedy=310  random=1186  random=126
+game  3: greedy=114  greedy=392  random=436  random=166
+game  4: greedy=394  greedy=68  random=384  random=1175
+game  5: greedy=392  greedy=226  random=168  random=0
+game  6: greedy=360  greedy=52  random=340  random=280
+game  7: greedy=242  greedy=128  random=700  random=390
+game  8: greedy=394  greedy=124  random=188  random=626
+game  9: greedy=392  greedy=188  random=116  random=710
+game 10: greedy=2  greedy=0  random=14  random=856
+game 11: greedy=214  greedy=392  random=252  random=858
+game 12: greedy=192  greedy=392  random=0  random=368
+game 13: greedy=150  greedy=394  random=314  random=210
+game 14: greedy=392  greedy=158  random=784  random=134
+game 15: greedy=392  greedy=384  random=4  random=536
+game 16: greedy=394  greedy=124  random=784  random=408
+game 17: greedy=208  greedy=282  random=362  random=498
+game 18: greedy=2  greedy=0  random=228  random=680
+game 19: greedy=350  greedy=150  random=434  random=778
+
+=== 20 games | map=maps/island.txt | rounds=200 | seed=42 ===
+greedy     wins=2   mean=288.1    std=133.2  min=2    max=394 
+greedy     wins=2   mean=202.6    std=132.0  min=0    max=394 
+random     wins=6   mean=379.4    std=292.6  min=0    max=1186
+random     wins=10  mean=497.1    std=298.2  min=0    max=1175
+draws=0

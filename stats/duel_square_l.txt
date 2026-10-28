@@ -1,0 +1,25 @@
+game  0: greedy=392  random=134
+game  1: greedy=392  random=0
+game  2: greedy=392  random=54
+game  3: greedy=202  random=190
+game  4: greedy=392  random=282
+game  5: greedy=392  random=0
+game  6: greedy=392  random=752
+game  7: greedy=392  random=0
+game  8: greedy=392  random=0
+game  9: greedy=392  random=334
+game 10: greedy=284  random=174
+game 11: greedy=392  random=0
+game 12: greedy=392  random=262
+game 13: greedy=392  random=0
+game 14: greedy=168  random=558
+game 15: greedy=392  random=0
+game 16: greedy=392  random=144
+game 17: greedy=224  random=464
+game 18: greedy=392  random=0
+game 19: greedy=392  random=286
+
+=== 20 games | map=maps/square_l.txt | rounds=200 | seed=42 ===
+greedy     wins=17  mean=357.5    std=71.5   min=168  max=392 
+random     wins=3   mean=181.7    std=209.9  min=0    max=752 
+draws=0
