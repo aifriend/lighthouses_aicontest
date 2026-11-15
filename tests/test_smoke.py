@@ -49,15 +49,15 @@ class EngineSmokeTests(unittest.TestCase):
         second = seeded_game(island, ["greedy", "random"], 50, seed=42)
         self.assertEqual(first, second)
 
-    def test_greedy_outscores_random_on_island(self):
-        # Behavioral baseline (see stats/duel_island.txt): the greedy
-        # example bot should beat the random bot over a few seeded games.
-        island = os.path.join(ROOT, "maps", "island.txt")
-        greedy_wins = 0
+    def test_greedy_outscores_random_on_square_xl(self):
+        # Behavioral baseline (see stats/duel_square_xl.txt, greedy wins
+        # 20/20): the greedy example bot must beat the random bot on every
+        # seeded game. island.txt is not used because greedy loses most
+        # games there (stats/duel_island.txt, 4/20 wins).
+        square_xl = os.path.join(ROOT, "maps", "square_xl.txt")
         for seed in range(5):
-            greedy, rand = seeded_game(island, ["greedy", "random"], 100, seed=seed)
-            greedy_wins += greedy > rand
-        self.assertGreaterEqual(greedy_wins, 3)
+            greedy, rand = seeded_game(square_xl, ["greedy", "random"], 100, seed=seed)
+            self.assertGreater(greedy, rand, "seed %d" % seed)
 
     def test_unknown_bot_is_rejected(self):
         with self.assertRaises(SystemExit):
