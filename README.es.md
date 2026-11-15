@@ -13,6 +13,11 @@ reglas completas, el motor, un conjunto de mapas, dos bots de ejemplo, un
 visor en vivo con pygame y un ejecutor de partidas headless con
 estadísticas.
 
+Este repositorio es un espejo del repo privado de investigación donde se
+desarrolla el proyecto *Lighthouse AI*; el código publicado aquí es una
+copia de ese trabajo, así que los cambios se hacen en origen y después se
+sincronizan con este repo.
+
 ![Partida de 4 bots en el mapa island](docs/img/match_island.png)
 
 ## El juego
@@ -65,6 +70,23 @@ los ejemplos en `examples/` y hereda de `interface.Bot` (`play(state)`
 devuelve una de `move / attack / connect / pass` — ver
 `examples/GreedyBot/greedybot.py` para una estrategia codiciosa mínima en
 ~50 líneas).
+
+Para que `match.py` y `ai_contest.py` puedan cargar tu bot por nombre,
+añade una entrada al diccionario `BOT_REGISTRY` de `match.py`. Cada entrada
+asocia el nombre que pasas a `--bots` con una tupla: el subdirectorio de
+`examples/` que contiene tu bot, el nombre del módulo y el nombre de la
+clase:
+
+```python
+BOT_REGISTRY = {
+    "random": ("RandBot", "randbot", "RandBot"),
+    "greedy": ("GreedyBot", "greedybot", "GreedyBot"),
+    "mybot":  ("MyBot", "mybot", "MyBot"),  # examples/MyBot/mybot.py
+}
+```
+
+Después, `python3 match.py --bots mybot,greedy` lo enfrenta a GreedyBot. Los
+nombres no registrados se rechazan con un error `Unknown bot`.
 
 El protocolo oficial del concurso — mensajes JSON por stdio, cualquier
 lenguaje de programación, 2 s para inicializarse y 100 ms por turno — está
