@@ -6,8 +6,7 @@ Licencia: Dominio Público
 Robot de ejemplo que juega de forma aleatoria
 
 Requisitos:
-	Python v2.6.x o v2.7.x
-		# apt-get install python2.7
+	Python 3.x
 
 Uso:
-$ python2.7 RandBot/randbot.py
+$ python3 RandBot/randbot.py
