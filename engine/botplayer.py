@@ -3,10 +3,6 @@ from process import Process
 
 
 class BotPlayer(object):
-    INIT_TIMEOUT = 2.0
-    MOVE_TIMEOUT = 0.1
-    MOVE_HARDTIMEOUT = 0.5
-
     def __init__(self, game, playernum, gamer, debug=False):
         self.alive = True
         self.game = game
@@ -75,7 +71,15 @@ class BotPlayer(object):
             "view": self.game.island.get_view(self.player.pos),
             "lighthouses": lighthouses,
         }
-        move = self.gamer.play(Process.fake_link(state))
+        try:
+            move = self.gamer.play(Process.fake_link(state))
+        except Exception as e:
+            # A crashing bot must not abort the whole match: record the
+            # failure and treat the turn as a pass.
+            self.last_move = None
+            self.last_error = CommError("Bot play() raised %s: %s"
+                                        % (type(e).__name__, e))
+            return
         self.last_move = move
         if not isinstance(move, dict) or "command" not in move:
             raise CommError("Invalid command structure")
